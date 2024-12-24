@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 connectDB();
 
 // Routes
-app.use('/api/banners', bannerRoutes);
+app.use('/api', bannerRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
