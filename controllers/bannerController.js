@@ -42,8 +42,51 @@ import Banner from '../models/BannerCreationSchema.js';
 //       .json({ message: 'Error creating banner', error: error.message });
 //   }
 // };
+// export const createBanner = async (req, res) => {
+//   try {
+//     console.log('Received request body:', req.body); // Log incoming data
+
+//     const {
+//       text,
+//       buttonText,
+//       backgroundColor,
+//       textColor,
+//       buttonColor,
+//       consentCategories,
+//       privacyPolicyLink,
+//       termsLink,
+//       consentExpiry,
+//       granularity,
+//     } = req.body;
+
+//     const newBanner = new Banner({
+//       text,
+//       buttonText,
+//       backgroundColor,
+//       textColor,
+//       buttonColor,
+//       consentCategories,
+//       privacyPolicyLink,
+//       termsLink,
+//       consentExpiry,
+//       granularity,
+//     });
+
+//     await newBanner.save();
+
+//     res
+//       .status(201)
+//       .json({ message: 'Banner created successfully', banner: newBanner });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: 'Error creating banner', error: error.message });
+//   }
+// };
 export const createBanner = async (req, res) => {
   try {
+    console.log('Received request body:', req.body); // Log incoming data
+
     const {
       text,
       buttonText,
@@ -57,19 +100,19 @@ export const createBanner = async (req, res) => {
       granularity,
     } = req.body;
 
-    // Validate multilingual fields (example for text and buttonText)
-    if (
-      !Array.isArray(text) ||
-      !text.every((item) => item.language && item.value)
-    ) {
-      return res.status(400).json({ message: 'Invalid text format' });
-    }
-    if (
-      !Array.isArray(buttonText) ||
-      !buttonText.every((item) => item.language && item.value)
-    ) {
-      return res.status(400).json({ message: 'Invalid buttonText format' });
-    }
+    // Log the data before creating the Banner object
+    console.log('Data to be inserted into the database:', {
+      text,
+      buttonText,
+      backgroundColor,
+      textColor,
+      buttonColor,
+      consentCategories,
+      privacyPolicyLink,
+      termsLink,
+      consentExpiry,
+      granularity,
+    });
 
     const newBanner = new Banner({
       text,
@@ -84,12 +127,16 @@ export const createBanner = async (req, res) => {
       granularity,
     });
 
+    // Try saving the banner
     await newBanner.save();
+
+    console.log('Banner saved successfully:', newBanner); // Log the saved banner object
 
     res
       .status(201)
       .json({ message: 'Banner created successfully', banner: newBanner });
   } catch (error) {
+    console.error('Error during banner creation:', error); // Log full error object
     res
       .status(500)
       .json({ message: 'Error creating banner', error: error.message });
